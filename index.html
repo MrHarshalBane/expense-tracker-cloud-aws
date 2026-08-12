@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Expense Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <h1>☁️ Expense Tracker</h1>
+    <p class="subtitle">AWS EC2 + Amazon RDS</p>
+
+    <section class="card total">
+      <span>Total Expenses</span>
+      <strong>₹{{ "%.2f"|format(total|float) }}</strong>
+    </section>
+
+    <section class="card">
+      <h2>Add Expense</h2>
+      <form action="{{ url_for('add_expense') }}" method="post" class="form">
+        <input name="title" placeholder="Expense title" required>
+        <input name="amount" type="number" step="0.01" min="0" placeholder="Amount" required>
+        <input name="category" placeholder="Category" required>
+        <input name="expense_date" type="date" required>
+        <button type="submit">Add Expense</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Expense History</h2>
+      {% if expenses %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Amount</th><th>Category</th><th>Date</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+          {% for expense in expenses %}
+            <tr>
+              <td>{{ expense.title }}</td>
+              <td>₹{{ "%.2f"|format(expense.amount|float) }}</td>
+              <td>{{ expense.category }}</td>
+              <td>{{ expense.expense_date }}</td>
+              <td>
+                <form action="{{ url_for('delete_expense', expense_id=expense.id) }}" method="post">
+                  <button class="delete" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <p>No expenses added yet.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f4f7fb; color: #1f2937; }
+.container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+h1 { margin-bottom: 5px; }
+.subtitle { color: #64748b; }
+.card { background: white; padding: 24px; margin: 20px 0; border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+.total { display: flex; justify-content: space-between; align-items: center; }
+.total strong { font-size: 28px; }
+.form { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+input, button { padding: 11px; border-radius: 8px; border: 1px solid #cbd5e1; }
+button { cursor: pointer; border: none; background: #2563eb; color: white; font-weight: 600; }
+.delete { background: #dc2626; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+@media (max-width: 750px) { .form { grid-template-columns: 1fr; } }
