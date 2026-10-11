@@ -3,59 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud Expense Tracker</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Cloud Expense Tracker - AWS Architecture Demo</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-    <h1>☁️ Expense Tracker</h1>
-    <p class="subtitle">AWS EC2 + Amazon RDS</p>
+  <!-- Header with Cloud Architecture Status -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="cloud-icon-badge">
+          <i class="fa-solid fa-cloud"></i>
+        </div>
+        <div>
+          <h1>Cloud Expense Tracker</h1>
+          <p class="subtitle">Cloud Computing Architecture • AWS EC2 &amp; Amazon RDS</p>
+        </div>
+      </div>
+      <div class="cloud-status-pills">
+        <div class="pill ec2" id="pill-ec2" title="Compute Layer">
+          <span class="status-dot"></span>
+          <i class="fa-solid fa-server"></i>
+          <span>AWS EC2 Instance: <strong>t2.micro</strong></span>
+        </div>
+        <div class="pill rds" id="pill-rds" title="Database Layer">
+          <span class="status-dot"></span>
+          <i class="fa-solid fa-database"></i>
+          <span>Amazon RDS: <strong>MySQL 8.0</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <section class="card total">
-      <span>Total Expenses</span>
-      <strong>₹{{ "%.2f"|format(total|float) }}</strong>
+  <main class="container">
+    <!-- AWS Architecture Interactive Banner -->
+    <section class="card arch-card">
+      <div class="arch-header">
+        <div class="arch-title">
+          <i class="fa-brands fa-aws aws-brand-icon"></i>
+          <h2>Live Cloud Architecture Topology</h2>
+        </div>
+        <div class="mode-badge">
+          <span class="pulse-indicator"></span> Active Simulated Cloud Sync
+        </div>
+      </div>
+      <div class="topology-diagram">
+        <div class="topo-node client-node">
+          <div class="node-icon"><i class="fa-solid fa-laptop-code"></i></div>
+          <div class="node-label">Client Browser</div>
+          <div class="node-ip">HTTPS / 443</div>
+        </div>
+        <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="topo-node igw-node">
+          <div class="node-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <div class="node-label">AWS VPC / IGW</div>
+          <div class="node-ip">Public Subnet</div>
+        </div>
+        <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="topo-node ec2-node">
+          <div class="node-icon"><i class="fa-solid fa-server"></i></div>
+          <div class="node-label">EC2 (Flask API)</div>
+          <div class="node-ip">Port 5000 / Gunicorn</div>
+        </div>
+        <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="topo-node rds-node">
+          <div class="node-icon"><i class="fa-solid fa-database"></i></div>
+          <div class="node-label">Amazon RDS</div>
+          <div class="node-ip">MySQL / Port 3306</div>
+        </div>
+      </div>
     </section>
 
-    <section class="card">
-      <h2>Add Expense</h2>
-      <form action="{{ url_for('add_expense') }}" method="post" class="form">
-        <input name="title" placeholder="Expense title" required>
-        <input name="amount" type="number" step="0.01" min="0" placeholder="Amount" required>
-        <input name="category" placeholder="Category" required>
-        <input name="expense_date" type="date" required>
-        <button type="submit">Add Expense</button>
+    <!-- Metrics Summary Cards -->
+    <section class="metrics-grid">
+      <div class="card metric-card total-metric">
+        <div class="metric-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+        <div>
+          <span class="metric-label">Total Expenses</span>
+          <strong class="metric-val" id="total-val">₹0.00</strong>
+        </div>
+      </div>
+      <div class="card metric-card count-metric">
+        <div class="metric-icon"><i class="fa-solid fa-receipt"></i></div>
+        <div>
+          <span class="metric-label">Total Entries</span>
+          <strong class="metric-val" id="count-val">0</strong>
+        </div>
+      </div>
+      <div class="card metric-card cat-metric">
+        <div class="metric-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <span class="metric-label">Top Category</span>
+          <strong class="metric-val" id="top-cat-val">-</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Expense Form -->
+    <section class="card form-card">
+      <div class="card-title-bar">
+        <h2><i class="fa-solid fa-plus-circle"></i> Add New Expense</h2>
+        <span class="card-hint">Stores transaction record directly into MySQL Database table</span>
+      </div>
+      <form id="expense-form" class="form">
+        <div class="form-group">
+          <label for="title-input">Expense Title</label>
+          <input id="title-input" name="title" placeholder="e.g. AWS Route 53 Domain" required>
+        </div>
+        <div class="form-group">
+          <label for="amount-input">Amount (₹)</label>
+          <input id="amount-input" name="amount" type="number" step="0.01" min="0" placeholder="0.00" required>
+        </div>
+        <div class="form-group">
+          <label for="category-input">Category</label>
+          <select id="category-input" name="category" required>
+            <option value="Cloud Infrastructure">Cloud Infrastructure</option>
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Travel & Commute">Travel & Commute</option>
+            <option value="Utilities & Bills">Utilities & Bills</option>
+            <option value="Education & Tools">Education & Tools</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="date-input">Expense Date</label>
+          <input id="date-input" name="expense_date" type="date" required>
+        </div>
+        <div class="form-group btn-col">
+          <button type="submit" class="btn btn-primary" id="btn-submit">
+            <i class="fa-solid fa-database"></i> Add Expense
+          </button>
+        </div>
       </form>
     </section>
 
-    <section class="card">
-      <h2>Expense History</h2>
-      {% if expenses %}
+    <!-- Expense History Table -->
+    <section class="card table-card">
+      <div class="card-title-bar">
+        <h2><i class="fa-solid fa-list-check"></i> Expense History</h2>
+        <div class="table-actions">
+          <button class="btn btn-sm btn-secondary" id="btn-seed" title="Load sample expense transactions">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Load Demo Data
+          </button>
+          <button class="btn btn-sm btn-outline-danger" id="btn-clear-all" title="Clear all records">
+            <i class="fa-solid fa-trash-can"></i> Clear All
+          </button>
+        </div>
+      </div>
+
       <div class="table-wrap">
-        <table>
+        <table id="expenses-table">
           <thead>
-            <tr><th>Title</th><th>Amount</th><th>Category</th><th>Date</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-          {% for expense in expenses %}
             <tr>
-              <td>{{ expense.title }}</td>
-              <td>₹{{ "%.2f"|format(expense.amount|float) }}</td>
-              <td>{{ expense.category }}</td>
-              <td>{{ expense.expense_date }}</td>
-              <td>
-                <form action="{{ url_for('delete_expense', expense_id=expense.id) }}" method="post">
-                  <button class="delete" type="submit">Delete</button>
-                </form>
-              </td>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Action</th>
             </tr>
-          {% endfor %}
+          </thead>
+          <tbody id="expenses-tbody">
+            <!-- Rows rendered dynamically by JS -->
           </tbody>
         </table>
       </div>
-      {% else %}
-        <p>No expenses added yet.</p>
-      {% endif %}
+      <div id="empty-state" class="empty-state hidden">
+        <i class="fa-solid fa-folder-open"></i>
+        <p>No expenses recorded yet. Add your first expense above!</p>
+      </div>
+    </section>
+
+    <!-- AWS Deployment & Architecture Info Reference -->
+    <section class="card docs-card">
+      <div class="docs-header">
+        <i class="fa-solid fa-circle-info"></i>
+        <h3>About This Cloud Deployment</h3>
+      </div>
+      <p>
+        This web application is built with <strong>Python Flask</strong> and designed for scalable production deployment on an <strong>AWS EC2</strong> instance linked to a managed <strong>Amazon RDS MySQL</strong> database. When viewed on GitHub Pages, transactions are preserved in client storage with simulated RDS latency and real-time computation.
+      </p>
+      <div class="docs-links">
+        <a href="https://github.com/MrHarshalBane/expense-tracker-cloud-aws/blob/main/AWS_DEPLOYMENT.md" target="_blank" class="doc-btn">
+          <i class="fa-solid fa-book"></i> Read AWS EC2 + RDS Deployment Guide
+        </a>
+        <a href="https://github.com/MrHarshalBane/expense-tracker-cloud-aws/blob/main/schema.sql" target="_blank" class="doc-btn">
+          <i class="fa-solid fa-table"></i> View MySQL Schema
+        </a>
+      </div>
     </section>
   </main>
+
+  <footer class="app-footer">
+    <p>Expense Tracker Web Application using Cloud Computing Services • AWS EC2 &amp; Amazon RDS • Built by Harshal Bane</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
