@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud Expense Tracker - AWS Architecture Demo</title>
+  <title>Expense Tracker Web Application using Cloud Computing Services (Host/Store) - AWS, EC2, RDS</title>
+  <meta name="description" content="Expense Tracker Web Application using Cloud Computing Services (Host/Store). Built for AWS EC2 cloud hosting and Amazon RDS cloud database storage.">
+  <meta name="keywords" content="AWS, EC2, RDS, Cloud Computing, Web Application, Expense Tracker, Cloud Host, Cloud Store, Amazon Web Services">
+  <meta name="author" content="Harshal Bane">
   <!-- Google Fonts & Font Awesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,32 +23,42 @@
           <i class="fa-solid fa-cloud"></i>
         </div>
         <div>
-          <h1>Cloud Expense Tracker</h1>
-          <p class="subtitle">Cloud Computing Architecture • AWS EC2 &amp; Amazon RDS</p>
+          <h1>Expense Tracker Web Application</h1>
+          <p class="subtitle">Cloud Computing Services (Host/Store) • AWS EC2 &amp; Amazon RDS</p>
         </div>
       </div>
       <div class="cloud-status-pills">
-        <div class="pill ec2" id="pill-ec2" title="Compute Layer">
+        <div class="pill ec2" id="pill-ec2" title="Cloud Host Layer">
           <span class="status-dot"></span>
           <i class="fa-solid fa-server"></i>
-          <span>AWS EC2 Instance: <strong>t2.micro</strong></span>
+          <span>AWS EC2 (Host): <strong>t2.micro</strong></span>
         </div>
-        <div class="pill rds" id="pill-rds" title="Database Layer">
+        <div class="pill rds" id="pill-rds" title="Cloud Store Layer">
           <span class="status-dot"></span>
           <i class="fa-solid fa-database"></i>
-          <span>Amazon RDS: <strong>MySQL 8.0</strong></span>
+          <span>Amazon RDS (Store): <strong>MySQL 8.0</strong></span>
         </div>
       </div>
     </div>
   </header>
 
   <main class="container">
+    <!-- Project Focus & Keywords Badge Strip -->
+    <section class="keywords-bar">
+      <span class="kw-title"><i class="fa-solid fa-tags"></i> Core Concepts &amp; Keywords:</span>
+      <span class="kw-tag"><i class="fa-brands fa-aws"></i> AWS</span>
+      <span class="kw-tag"><i class="fa-solid fa-server"></i> EC2 (Cloud Host)</span>
+      <span class="kw-tag"><i class="fa-solid fa-database"></i> RDS (Cloud Store)</span>
+      <span class="kw-tag"><i class="fa-solid fa-cloud"></i> Cloud Computing</span>
+      <span class="kw-tag"><i class="fa-solid fa-globe"></i> Web Application</span>
+    </section>
+
     <!-- AWS Architecture Interactive Banner -->
     <section class="card arch-card">
       <div class="arch-header">
         <div class="arch-title">
           <i class="fa-brands fa-aws aws-brand-icon"></i>
-          <h2>Live Cloud Architecture Topology</h2>
+          <h2>Expense Tracker Web Application • Cloud Computing Services (Host / Store)</h2>
         </div>
         <div class="mode-badge">
           <span class="pulse-indicator"></span> Active Simulated Cloud Sync
@@ -55,25 +68,25 @@
         <div class="topo-node client-node">
           <div class="node-icon"><i class="fa-solid fa-laptop-code"></i></div>
           <div class="node-label">Client Browser</div>
-          <div class="node-ip">HTTPS / 443</div>
+          <div class="node-ip">Web Application UI</div>
         </div>
         <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         <div class="topo-node igw-node">
           <div class="node-icon"><i class="fa-solid fa-network-wired"></i></div>
           <div class="node-label">AWS VPC / IGW</div>
-          <div class="node-ip">Public Subnet</div>
+          <div class="node-ip">Cloud Computing Network</div>
         </div>
         <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         <div class="topo-node ec2-node">
           <div class="node-icon"><i class="fa-solid fa-server"></i></div>
-          <div class="node-label">EC2 (Flask API)</div>
-          <div class="node-ip">Port 5000 / Gunicorn</div>
+          <div class="node-label">AWS EC2 (Host)</div>
+          <div class="node-ip">Web App Host / Flask</div>
         </div>
         <div class="topo-arrow"><i class="fa-solid fa-arrow-right"></i></div>
         <div class="topo-node rds-node">
           <div class="node-icon"><i class="fa-solid fa-database"></i></div>
-          <div class="node-label">Amazon RDS</div>
-          <div class="node-ip">MySQL / Port 3306</div>
+          <div class="node-label">Amazon RDS (Store)</div>
+          <div class="node-ip">Cloud Database Store / MySQL</div>
         </div>
       </div>
     </section>
@@ -107,7 +120,7 @@
     <section class="card form-card">
       <div class="card-title-bar">
         <h2><i class="fa-solid fa-plus-circle"></i> Add New Expense</h2>
-        <span class="card-hint">Stores transaction record directly into MySQL Database table</span>
+        <span class="card-hint">Web application inputs dispatched to be stored in the Amazon RDS (Cloud Store) MySQL database</span>
       </div>
       <form id="expense-form" class="form">
         <div class="form-group">
@@ -182,25 +195,35 @@
     <!-- AWS Deployment & Architecture Info Reference -->
     <section class="card docs-card">
       <div class="docs-header">
-        <i class="fa-solid fa-circle-info"></i>
-        <h3>About This Cloud Deployment</h3>
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <h3>Expense Tracker Web Application using Cloud Computing Services (Host/Store)</h3>
       </div>
       <p>
-        This web application is built with <strong>Python Flask</strong> and designed for scalable production deployment on an <strong>AWS EC2</strong> instance linked to a managed <strong>Amazon RDS MySQL</strong> database. When viewed on GitHub Pages, transactions are preserved in client storage with simulated RDS latency and real-time computation.
+        This <strong>Web Application</strong> leverages modern <strong>Cloud Computing</strong> services provided by <strong>AWS</strong>:
+      </p>
+      <ul class="cloud-features-list">
+        <li><strong>Cloud Hosting (Host):</strong> Deployed on an <strong>AWS EC2</strong> (Elastic Compute Cloud) Linux instance running Python Flask and Gunicorn web application server.</li>
+        <li><strong>Cloud Storage (Store):</strong> Managed relational database backend powered by <strong>Amazon RDS</strong> (Relational Database Service) running MySQL 8.0 for ACID compliance, secure credential isolation, and automated backups.</li>
+      </ul>
+      <p class="demo-note">
+        <em>Note for Reviewers:</em> On this GitHub Pages live preview, client-side persistence simulates direct AWS EC2 &amp; Amazon RDS cloud sync with full CRUD features. Full production backend scripts, WSGI server configs, and RDS schema are included in the repository.
       </p>
       <div class="docs-links">
         <a href="https://github.com/MrHarshalBane/expense-tracker-cloud-aws/blob/main/AWS_DEPLOYMENT.md" target="_blank" class="doc-btn">
-          <i class="fa-solid fa-book"></i> Read AWS EC2 + RDS Deployment Guide
+          <i class="fa-solid fa-book"></i> Read AWS EC2 (Host) + RDS (Store) Deployment Guide
         </a>
         <a href="https://github.com/MrHarshalBane/expense-tracker-cloud-aws/blob/main/schema.sql" target="_blank" class="doc-btn">
-          <i class="fa-solid fa-table"></i> View MySQL Schema
+          <i class="fa-solid fa-table"></i> View Amazon RDS MySQL Schema
+        </a>
+        <a href="https://github.com/MrHarshalBane/expense-tracker-cloud-aws" target="_blank" class="doc-btn">
+          <i class="fa-brands fa-github"></i> GitHub Repository
         </a>
       </div>
     </section>
   </main>
 
   <footer class="app-footer">
-    <p>Expense Tracker Web Application using Cloud Computing Services • AWS EC2 &amp; Amazon RDS • Built by Harshal Bane</p>
+    <p>Expense Tracker Web Application using Cloud Computing Services (Host: AWS EC2, Store: Amazon RDS) • AWS, EC2, RDS, Cloud Computing, Web Application • Built by Harshal Bane</p>
   </footer>
 
   <script src="app.js"></script>

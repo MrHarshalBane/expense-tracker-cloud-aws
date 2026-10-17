@@ -1,26 +1,56 @@
-# AWS Deployment Guide
+# AWS Cloud Deployment Guide: Host on EC2 & Store on Amazon RDS
 
-## 1. Create RDS
-- Create an Amazon RDS MySQL database.
-- Create database name: `expense_tracker`.
-- Note the RDS endpoint, username and password.
-- Configure the RDS security group so MySQL port 3306 is accessible from the EC2 security group (prefer security-group-to-security-group access rather than opening 3306 to the internet).
+This guide outlines how to host the **Expense Tracker Web Application** using **Cloud Computing** infrastructure provided by **Amazon Web Services (AWS)**:
+- **Cloud Host:** **AWS EC2** (Amazon Elastic Compute Cloud)
+- **Cloud Store:** **Amazon RDS** (Amazon Relational Database Service MySQL)
 
-## 2. Create EC2
-- Launch an EC2 Linux instance.
-- Configure the security group to allow SSH (22) from your IP and HTTP (80) if using a reverse proxy.
-- Connect using SSH.
+---
 
-## 3. Install application dependencies
+## 1. Cloud Database (Store): Amazon RDS Setup
+- Navigate to the **AWS RDS Console** and select **Create Database**.
+- Select **MySQL 8.0** engine.
+- Template: Free Tier (or Dev/Test).
+- DB Instance Identifier: `expense-tracker-db`.
+- Set Master Username: (e.g. `admin`) and secure Master Password.
+- Initial Database Name: `expense_tracker`.
+- Public Access: Turn off (private within VPC).
+- **Security Group Configuration:** Allow inbound traffic on MySQL port `3306` **only** from the Security Group ID assigned to your AWS EC2 instance.
+- Note down the **RDS Endpoint** once the status changes to *Available*.
+
+---
+
+## 2. Cloud Compute (Host): AWS EC2 Setup
+- Navigate to the **AWS EC2 Console** and launch an **Amazon Linux 2023** or **Ubuntu 22.04 LTS** instance (`t2.micro` free tier eligible).
+- **Security Group Configuration:**
+  - Inbound **SSH (Port 22)**: Restricted to your IP.
+  - Inbound **HTTP (Port 80)**: Accessible to the public (`0.0.0.0/0`) for web clients.
+- Download your Key Pair `.pem` and connect:
+  ```bash
+  ssh -i your-key.pem ec2-user@your-ec2-public-ip
+  ```
+
+---
+
+## 3. Install Dependencies & Clone Web Application
 ```bash
 sudo dnf update -y
 sudo dnf install -y python3-pip git mysql
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd expense-tracker-cloud
-pip3 install -r app/requirements.txt
+git clone https://github.com/mrharshalbane/expense-tracker-cloud-aws.git
+cd expense-tracker-cloud-aws
+pip3 install -r requirements.txt
 ```
 
-## 4. Configure environment variables
+---
+
+## 4. Initialize Database Schema on Amazon RDS
+Connect to your RDS instance from EC2:
+```bash
+mysql -h YOUR_RDS_ENDPOINT -u YOUR_RDS_USER -p expense_tracker < schema.sql
+```
+
+---
+
+## 5. Configure Cloud Environment Variables
 ```bash
 export DB_HOST="YOUR_RDS_ENDPOINT"
 export DB_USER="YOUR_RDS_USER"
@@ -29,12 +59,18 @@ export DB_NAME="expense_tracker"
 export DB_PORT="3306"
 ```
 
-## 5. Create the table
-Run `database/schema.sql` against your RDS MySQL database.
+---
 
-## 6. Start the application
+## 6. Run the Web Application
+For development:
 ```bash
-python3 app/app.py
+python3 app.py
 ```
 
-For a production deployment, use a WSGI server such as Gunicorn behind Nginx rather than Flask's development server.
+For production deployment on EC2, run behind **Gunicorn** and **Nginx**:
+```bash
+pip3 install gunicorn
+gunicorn -w 3 -b 0.0.0.0:5000 app:app
+```
+Configure Nginx as a reverse proxy from Port 80 to Port 5000.
+
