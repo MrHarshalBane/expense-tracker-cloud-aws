@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS expenses (
     title VARCHAR(100) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
     category VARCHAR(50) NOT NULL,
+    region VARCHAR(60) NOT NULL DEFAULT 'ap-south-1 (Mumbai)',
     expense_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+

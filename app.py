@@ -17,27 +17,35 @@ def get_connection():
 
 @app.route("/")
 def index():
+    region = request.args.get("region", "ALL")
     conn = get_connection()
     with conn.cursor() as cur:
-        cur.execute("SELECT id, title, amount, category, expense_date FROM expenses ORDER BY expense_date DESC, id DESC")
-        expenses = cur.fetchall()
-        cur.execute("SELECT COALESCE(SUM(amount), 0) AS total FROM expenses")
-        total = cur.fetchone()["total"]
+        if region != "ALL":
+            cur.execute("SELECT id, title, amount, category, region, expense_date FROM expenses WHERE region = %s ORDER BY expense_date DESC, id DESC", (region,))
+            expenses = cur.fetchall()
+            cur.execute("SELECT COALESCE(SUM(amount), 0) AS total FROM expenses WHERE region = %s", (region,))
+            total = cur.fetchone()["total"]
+        else:
+            cur.execute("SELECT id, title, amount, category, region, expense_date FROM expenses ORDER BY expense_date DESC, id DESC")
+            expenses = cur.fetchall()
+            cur.execute("SELECT COALESCE(SUM(amount), 0) AS total FROM expenses")
+            total = cur.fetchone()["total"]
     conn.close()
-    return render_template("index.html", expenses=expenses, total=total)
+    return render_template("index.html", expenses=expenses, total=total, current_region=region)
 
 @app.route("/add", methods=["POST"])
 def add_expense():
     title = request.form["title"].strip()
     amount = request.form["amount"]
     category = request.form["category"].strip()
+    region = request.form.get("region", "ap-south-1 (Mumbai)").strip()
     expense_date = request.form["expense_date"]
 
     conn = get_connection()
     with conn.cursor() as cur:
         cur.execute(
-            "INSERT INTO expenses (title, amount, category, expense_date) VALUES (%s, %s, %s, %s)",
-            (title, amount, category, expense_date)
+            "INSERT INTO expenses (title, amount, category, region, expense_date) VALUES (%s, %s, %s, %s, %s)",
+            (title, amount, category, region, expense_date)
         )
     conn.close()
     return redirect(url_for("index"))

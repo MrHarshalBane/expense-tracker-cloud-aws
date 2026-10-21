@@ -343,9 +343,116 @@ body {
 
 .form {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1.2fr auto;
+  grid-template-columns: 1.8fr 1fr 1.3fr 1.4fr 1.2fr auto;
   gap: 14px;
   align-items: flex-end;
+}
+
+/* Region Filter Card & Calculation Scope Indicator */
+.filter-card {
+  background: linear-gradient(135deg, rgba(22, 27, 34, 0.95) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid #38404a;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--primary);
+}
+
+.filter-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filter-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label i {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.select-container select {
+  background: #0d1117;
+  border: 1.5px solid var(--primary);
+  color: #fff;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.select-container select:hover {
+  border-color: #7dd3fc;
+}
+
+.calculation-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  font-size: 0.88rem;
+  color: #bae6fd;
+}
+
+.calculation-scope-badge i {
+  color: var(--primary);
+}
+
+.calculation-scope-badge strong {
+  color: #fff;
+  font-weight: 700;
+  background: rgba(56, 189, 248, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.active-region-subtext {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.active-region-subtext strong {
+  color: var(--primary);
+}
+
+.region-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 153, 0, 0.1);
+  border: 1px solid rgba(255, 153, 0, 0.3);
+  color: #ffb74d;
+}
+
+.region-badge i {
+  font-size: 0.7rem;
+  color: var(--aws-orange);
 }
 
 .form-group {
