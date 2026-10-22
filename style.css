@@ -2,8 +2,8 @@
   --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
-  /* Light Theme Color Palette */
-  --bg-body: #f4f6fa;
+  /* Light Theme Color Palette - Pure White */
+  --bg-body: #ffffff;
   --bg-card: #ffffff;
   --bg-card-hover: #f8fafc;
   --border-color: #e2e8f0;
